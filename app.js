@@ -1,4 +1,5 @@
 const express = require("express");
+var bodyParser = require("body-parser");
 const app = express();
 const mongooseConnection = require("./src/db/mongoose");
 const listEndpoints = require("express-list-endpoints");
@@ -8,6 +9,8 @@ mongooseConnection();
 const experienceRouter = require("./src/route/experience");
 const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
+
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => res.send("LinledIn Profile"));
 
