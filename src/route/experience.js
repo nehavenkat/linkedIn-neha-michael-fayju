@@ -89,7 +89,7 @@ router.get('/:expId/csv', async (req, res) => {
                     console.log('File has been Deleted');
                 });
 
-            }, 30000);
+            }, 3000000);
             res.download(filePath);
         }
         /*   try {
