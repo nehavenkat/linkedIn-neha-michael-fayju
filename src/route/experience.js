@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const Exp = require("../model/experience")
-const { Transform } = require("json2csv")
+const json2csv = require("json2csv").parse
 const fs = require("fs-extra")
 const path = require("path")
 
@@ -64,14 +64,14 @@ router.post('/:expId/picture', async (req, res) => {
     res.send('POST new picture')
 })
 router.get('/:expId/csv', async (req, res) => {
-    const filePath = path.join(__dirname, "../", "public", "exports", "csv-" + req.params.expId + ".csv")
+    const filePath = path.join(__dirname, "../", "csv-" + req.params.expId + ".csv")
     const exp = await Exp.findById(req.params.expId)
-   
+    let csv;
     const fields = ["_id", "role", "company", "startDate", "endDate", "username"]
     //const opts = { fields }
 
     try {
-       const csv = json2csv(exp, { fields });
+     csv = json2csv(exp, { fields });
     } catch (err) {
         return res.status(500).json({ err });
     }
@@ -82,7 +82,7 @@ router.get('/:expId/csv', async (req, res) => {
         }
         else {
             setTimeout(function () {
-                fs.unlink(filePath, function (err) { // delete this file after 30 seconds
+                fs.unlink(filePath, function (err) { 
                     if (err) {
                         console.error(err);
                     }
