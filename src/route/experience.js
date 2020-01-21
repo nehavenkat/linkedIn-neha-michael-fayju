@@ -64,8 +64,8 @@ router.delete('/:expId', async (req, res) => {
 })
 
 
-const uploadURL = path.join(__dirname, "../../../public/img/");
-
+const uploadURL = path.join(__dirname, "../../public/img/");
+console.log(uploadURL)
 router.post(
     "/:expId/picture", upload.single("image"),/* ,
     [
@@ -81,7 +81,7 @@ router.post(
 
         const file = req.file;
         const filename = req.params.expId.toString() + ".jpeg"
-        await writeFile(path.join(uploadURL, /* file.originalname */ filename), file.buffer);
+        await fs.writeFile(path.join(uploadURL, /* file.originalname */ filename), file.buffer);
         console.log(req.file.originalname)
         const { image } = res.req.file.originalname;
         try {
