@@ -80,26 +80,26 @@ router.post(
         } */
 
         const file = req.file;
-        const filename = req.params.expId.toString() + ".jpeg"
+        const filename = req.params.expId + ".jpeg"
         await fs.writeFile(path.join(uploadURL, /* file.originalname */ filename), file.buffer);
         console.log(req.file.originalname)
-        const { image } = res.req.file.originalname;
+        const { image } = req.file.originalname;
         try {
-            const response = await Profile.findByIdAndUpdate(req.params.expId,
+            const response = await Exp.findByIdAndUpdate(req.params.expId,
                 { image: image },
                 { new: true }
             );
-            response ? res.send(response) : res.send({});
+            res.send(response)
         } catch (error) {
             console.log(error);
-            res.json(error);
+            res.send(error);
         }
     }
 );
 
-router.post('/:expId/picture', async (req, res) => {
+/* router.post('/:expId/picture', async (req, res) => {
     res.send('POST new picture')
-})
+}) */
 router.get('/:username/csv', async (req, res) => {
     const filePath = path.join(__dirname, "../", "exp-" + req.params.username + ".csv")
     const exp = await Exp.find({ username: req.params.username })
