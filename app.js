@@ -19,4 +19,4 @@ app.use("/profiles", profileRouter);
 app.use("/posts", postRouter);
 
 console.log(listEndpoints(app));
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`Your app is listening on port ${port}!`));
