@@ -79,11 +79,14 @@ router.post(
             return res.status(422).json({ errors: errors.array() });
         } */
 
+       
+        
+
         const file = req.file;
-        const filename = req.params.expId + ".jpeg"
+        const filename = req.protocol + req.params.expId + ".jpeg"
         await fs.writeFile(path.join(uploadURL, /* file.originalname */ filename), file.buffer);
         console.log(req.file.originalname)
-        const { image } = req.file.originalname;
+        const image = req.file.originalname;
         try {
             const response = await Exp.findByIdAndUpdate(req.params.expId,
                 { image: image },
