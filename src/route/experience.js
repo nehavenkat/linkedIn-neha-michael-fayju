@@ -4,8 +4,10 @@ const Exp = require("../model/experience")
 const json2csv = require("json2csv").parse
 const fs = require("fs-extra")
 const path = require("path")
+const multer = require("multer");
+const { check, validationResult } = require("express-validator");
 
-
+const upload = multer({});
 router.get('/', async (req, res) => {
 
     try {
@@ -60,6 +62,41 @@ router.delete('/:expId', async (req, res) => {
     }
 
 })
+
+
+const uploadURL = path.join(__dirname, "../../../public/img/");
+
+router.post(
+    "/:expId/picture", upload.single("image"),/* ,
+    [
+        check("image")
+            .isURL()
+            .withMessage("Valid Image URL is needed!")
+    ], */
+    async (req, res) => {
+        /* const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        } */
+
+        const file = req.file;
+        const filename = req.params.expId.toString() + ".jpeg"
+        await writeFile(path.join(uploadURL, /* file.originalname */ filename), file.buffer);
+        console.log(req.file.originalname)
+        const { image } = res.req.file.originalname;
+        try {
+            const response = await Profile.findByIdAndUpdate(req.params.expId,
+                { image: image },
+                { new: true }
+            );
+            response ? res.send(response) : res.send({});
+        } catch (error) {
+            console.log(error);
+            res.json(error);
+        }
+    }
+);
+
 router.post('/:expId/picture', async (req, res) => {
     res.send('POST new picture')
 })

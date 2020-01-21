@@ -12,6 +12,8 @@ const postRouter = require("./src/route/post");
 
 app.use(bodyParser.json());
 
+app.use(express.static('public'));
+
 app.get("/", (req, res) => res.send("LinledIn Profile"));
 
 app.use("/experiences", experienceRouter);
