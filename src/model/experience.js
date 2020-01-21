@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-var uniqueValidator = require('mongoose-unique-validator');
+//var uniqueValidator = require('mongoose-unique-validator');
 
 const expSchema = new Schema({
     role: {
@@ -29,17 +29,17 @@ const expSchema = new Schema({
     area: {
         type: String
     },
-    username: {
-        type: String,
-        unique: [true, "username already exist in database"]
-    },
+     username: {
+        type: String
+        
+    }, 
     image: {
         type: String,
         default: "http://via.placeholder.com/360x360"
     }
 }, { timestamps: true });
 
-expSchema.plugin(uniqueValidator);
+//expSchema.plugin(uniqueValidator);
 
 const Exp = mongoose.model("Experience", expSchema);
 
