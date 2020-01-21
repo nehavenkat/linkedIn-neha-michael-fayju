@@ -23,7 +23,7 @@ username: {
     },
 image:{
     type: String,
-    default: 'image'
+    default: 'http://via.placeholder.com/640x360'
 }
 }, { timestamps: true});
 
