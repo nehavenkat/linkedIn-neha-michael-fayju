@@ -21,7 +21,8 @@ text: {
         maxlength: 50
 	},
 username: {
-		type: String,
+    type: String,
+    required: [true, "username is required!"],
     },
 image:{
     type: String,
