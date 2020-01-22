@@ -46,10 +46,10 @@ const expSchema = new Schema({
     area: {
         type: String
     },
-    username: {
-        type: String,
-        unique: [true, "username already exist in database"]
-    },
+     username: {
+        type: String
+        
+    }, 
     image: {
         type: String,
         default: "http://via.placeholder.com/360x360"

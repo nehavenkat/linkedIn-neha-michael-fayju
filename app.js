@@ -11,7 +11,11 @@ const experienceRouter = require("./src/route/experience");
 const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
 
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
+
+app.use(express.json());
+
+app.use(express.static('public'));
 
 app.get("/", (req, res) => res.send("LinledIn Profile"));
 
