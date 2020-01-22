@@ -12,49 +12,59 @@
         "updatedAt": "2019-09-30T19:58:31.019Z",  //server generated
         "image": ... //server generated on upload, set a default here
     }  */
-    
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 //https://www.npmjs.com/package/mongoose-unique-validator
 //mongoose-unique-validator is a plugin which adds pre-save validation for unique fields within a Mongoose schema.
-var uniqueValidator = require('mongoose-unique-validator');
+var uniqueValidator = require("mongoose-unique-validator");
+
+// function that validate the startDate and endDate
+function dateValidator(endDate) {
+  // `this` is the mongoose document
+  return this.startDate < endDate;
+}
 
 //https://mongoosejs.com/docs/schematypes.html (Schema Types)
-const expSchema = new Schema({
+const expSchema = new Schema(
+  {
     role: {
-        type: String,
-        required: [true, "Role is required!"]
+      type: String,
+      required: [true, "Role is required!"]
     },
     company: {
-        type: String,
-        required: [true, "Company is required!"],
-        minlength: 3,
-        maxlength: 150
+      type: String,
+      required: [true, "Company is required!"],
+      minlength: 3,
+      maxlength: 150
     },
     startDate: {
-        type: Date,
-        required: true
+      type: Date,
+      required: true,
+      max: [new Date(), "Experience start date should be before today."]
     },
     endDate: {
-        type: Date,
-        required: true
+      type: Date,
+      validate: [dateValidator, "Start Date must be less than End Date"]
     },
     description: {
-        type: String
+      type: String
     },
     area: {
-        type: String
+      type: String
     },
-     username: {
-        type: String
-        
-    }, 
+    username: {
+      type: String,
+      required: true
+    },
     image: {
-        type: String,
-        default: "http://via.placeholder.com/360x360"
+      type: String,
+      default: "http://via.placeholder.com/360x360"
     }
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
 //Applying the unique plugin to the schema:
 expSchema.plugin(uniqueValidator);

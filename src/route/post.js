@@ -76,12 +76,12 @@ const upload = multer({});
 router.post("/:postId/picture", upload.single("image"), async (req, res) => {
   try {
     const ext = path.extname(req.file.originalname);
-    const imgDest = path.join(__dirname, "../../images/" + req.params.postId + ext);
+    const imgDest = path.join(__dirname, "../../images/post/" + req.params.postId + ext);
     const imgServe =
       req.protocol +
       "://" +
       req.get("host") +
-      "/images/" +
+      "/images/post/" +
       req.params.postId +
       ext;
     await writeFile(imgDest, req.file.buffer);
