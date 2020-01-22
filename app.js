@@ -15,8 +15,6 @@ const postRouter = require("./src/route/post");
 
 app.use(express.json());
 
-app.use(express.static('public'));
-
 app.get("/", (req, res) => res.send("LinkedIn Profile"));
 
 app.use("/images", express.static(path.join(__dirname, "images")))
