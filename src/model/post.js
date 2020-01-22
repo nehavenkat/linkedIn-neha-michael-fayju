@@ -9,6 +9,8 @@
 //}
 
 const mongoose = require('mongoose');
+
+//defining the schema
 const Schema = mongoose.Schema
 
 var postSchema = new Schema({
@@ -23,9 +25,14 @@ username: {
     },
 image:{
     type: String,
+    //sets a default value for the path
     default: 'http://via.placeholder.com/640x360'
 }
 }, { timestamps: true});
+//If set timestamps, mongoose assigns createdAt and updatedAt fields to the schema,the type assigned is Date.
+//{ timestamps: { createdAt: 'created_at' } });
 
+//To use the schema definition, we need to convert our PostSchema into a Model we can work with. 
+//To do so, we pass it into mongoose.model(modelName, schema):
 const postsCollection = mongoose.model('Post', postSchema);
 module.exports = postsCollection;
