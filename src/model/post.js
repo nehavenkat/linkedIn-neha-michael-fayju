@@ -18,7 +18,7 @@ text: {
         type: String,
         required: [true, "Type in a comment!"],
         minlength: 3,
-        maxlength: 50
+        maxlength: 500
 	},
 username: {
     type: String,
