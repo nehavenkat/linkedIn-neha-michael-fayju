@@ -14,9 +14,15 @@
 // }
 
 const mongoose = require("mongoose");
+
+////defining the schema
 const Schema = mongoose.Schema;
+
+//https://www.npmjs.com/package/mongoose-unique-validator
+//mongoose-unique-validator is a plugin which adds pre-save validation for unique fields within a Mongoose schema.
 var uniqueValidator = require('mongoose-unique-validator');
 
+//https://mongoosejs.com/docs/schematypes.html (Schema Types)
 const profileSchema = new Schema({
   name: {
     type: String,
@@ -54,8 +60,12 @@ const profileSchema = new Schema({
 	}
 }, { timestamps: true});
 
+//Applying the unique plugin to the schema:
 profileSchema.plugin(uniqueValidator);
 
+
+//To use the schema definition, we need to convert our PostSchema into a Model we can work with. 
+//To do so, we pass it into mongoose.model(modelName, schema):
 const Profile = mongoose.model("Profile", profileSchema);
 
 module.exports = Profile;
