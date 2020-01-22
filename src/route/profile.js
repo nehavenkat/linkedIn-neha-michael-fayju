@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Profile = require("../model/profile");
 const { check, validationResult } = require("express-validator");
+const { writeFile } = require("fs-extra");
+const multer = require("multer");
+const path = require("path");
 
 router.get("/", async (req, res) => {
   try {
@@ -89,32 +92,33 @@ router.put("/:username", async (req, res) => {
     res.json(error);
   }
 });
-router.post(
-  "/:username/picture",
-  [
-    check("image")
-      .isURL()
-      .withMessage("Valid Image URL is needed!")
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    const { image } = req.body;
-    try {
-      const response = await Profile.findOneAndUpdate(
-        { username: req.params.username },
-        { image: image },
-        { new: true }
-      );
-      response ? res.json(response) : res.json({});
-    } catch (error) {
-      console.log(error);
-      res.json(error);
-    }
+const upload = multer({});
+router.post("/:username/picture", upload.single("image"), async (req, res) => {
+  try {
+    const ext = path.extname(req.file.originalname);
+    const imgDest = path.join(
+      __dirname,
+      "../../images/profile/" + req.params.username + ext
+    );
+    const imgServe =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      "/images/profile/" +
+      req.params.username +
+      ext;
+    await writeFile(imgDest, req.file.buffer);
+    const post = await Profile.findOneAndUpdate(
+      req.params.postId,
+      { image: imgServe },
+      { new: true }
+    );
+    res.send(post);
+  } catch (err) {
+    console.log(err);
+    res.send(err);
   }
-);
+});
 router.get("/:username/CV", async (req, res) => {
   res.send("POST CV");
 });
