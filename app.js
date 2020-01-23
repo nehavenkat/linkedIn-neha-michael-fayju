@@ -1,4 +1,5 @@
 const express = require("express");
+var cors = require("cors");
 var bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
@@ -12,6 +13,18 @@ const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
 
 //app.use(bodyParser.json());
+
+var whitelist = ["http://localhost:3000", "https://faizanbardai.github.io"];
+var corsOptions = {
+  origin: function(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
