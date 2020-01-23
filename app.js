@@ -17,6 +17,7 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.send("LinkedIn Profile"));
 
+//server.use("/images", express.static(path.join(__dirname, "images")))
 app.use("/images", express.static(path.join(__dirname, "images")))
 app.use("/experiences", experienceRouter);
 app.use("/profiles", profileRouter);

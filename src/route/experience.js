@@ -6,7 +6,6 @@ const path = require("path");
 const multer = require("multer");
 const { writeFile } = require("fs-extra");
 
-const upload = multer({});
 router.get("/", async (req, res) => {
   try {
     const exps = await Exp.find();
@@ -62,6 +61,7 @@ router.delete("/:expId", async (req, res) => {
   }
 });
 
+const upload = multer({});
 router.post("/:expId/picture", upload.single("image"), async (req, res) => {
   try {
     const ext = path.extname(req.file.originalname);
@@ -89,11 +89,15 @@ router.post("/:expId/picture", upload.single("image"), async (req, res) => {
   }
 });
 
-router.get("/:username/csv", async (req, res) => {
+  router.get("/:username/csv", async (req, res) => {
   const exp = await Exp.find({ username: req.params.username });
+
+  //the fields we use on the CSV
   const fields = ["username", "_id", "role", "company", "startDate", "endDate"];
   const opts = { fields };
   try {
+    //https://www.npmjs.com/package/json2csv
+    // const csv = parse(myData, opts);
     let csv = json2csv(exp, opts);
     res.send(csv);
   } catch (err) {

@@ -75,8 +75,16 @@ const upload = multer({});
 // req.file is the `image` file
 router.post("/:postId/picture", upload.single("image"), async (req, res) => {
   try {
+   
+//const fileName = req.params.asin + path.extname(req.file.originalname) 
+//create a new filename for existing path "ASIN.ext"
     const ext = path.extname(req.file.originalname);
+
+    //Create a path where the image should be stored + as we need "/postId" + ext
     const imgDest = path.join(__dirname, "../../images/post/" + req.params.postId + ext);
+    
+    //const imgServe = req.protocol + '://' + req.get('host') + "/images/" + fileName;
+    // serve is the webstite link we use to get image protocol:https, host:localhost, 
     const imgServe =
       req.protocol +
       "://" +

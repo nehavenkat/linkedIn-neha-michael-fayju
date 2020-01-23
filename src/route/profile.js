@@ -120,6 +120,8 @@ router.post("/:username/picture", upload.single("image"), async (req, res) => {
   }
 });
 router.get("/:username/CV", async (req, res) => {
+
+  
   res.send("POST CV");
 });
 router.delete("/:id", async (req, res) => {
