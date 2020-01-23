@@ -13,6 +13,12 @@ const mongoose = require('mongoose');
 //defining the schema
 const Schema = mongoose.Schema
 
+
+const commentsSchema = new mongoose.Schema({
+  comment: String,
+  username: String
+});
+
 var postSchema = new Schema({
 text: {
         type: String,
@@ -27,7 +33,9 @@ image:{
     type: String,
     //sets a default value for the path
     default: 'http://via.placeholder.com/640x360'
-}
+},
+comments: [commentsSchema]
+
 }, { timestamps: true});
 //If set timestamps, mongoose assigns createdAt and updatedAt fields to the schema,the type assigned is Date.
 //{ timestamps: { createdAt: 'created_at' } });
