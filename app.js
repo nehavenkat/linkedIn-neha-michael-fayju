@@ -9,6 +9,10 @@ mongooseConnection();
 const experienceRouter = require("./src/route/experience");
 const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
+const auth = require('./auth')
+
+
+
 
 //app.use(bodyParser.json());
 
@@ -17,6 +21,8 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.get("/", (req, res) => res.send("LinledIn Profile"));
+
+app.use(auth)
 
 app.use("/experiences", experienceRouter);
 app.use("/profiles", profileRouter);
