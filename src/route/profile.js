@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Profile = require("../model/profile");
+const Exp = require("../model/experience");
 const { check, validationResult } = require("express-validator");
-const { writeFile } = require("fs-extra");
+const { writeFile, readFile, createWriteStream } = require("fs-extra");
 const multer = require("multer");
 const path = require("path");
+var PdfPrinter = require("pdfmake");
 
 router.get("/", async (req, res) => {
   try {
@@ -120,9 +122,76 @@ router.post("/:username/picture", upload.single("image"), async (req, res) => {
   }
 });
 router.get("/:username/CV", async (req, res) => {
-
+  const fonts = {
+    Roboto: {
+      normal: "./fonts/Roboto-Regular.ttf",
+      bold: "./fonts/Roboto-Medium.ttf",
+      italics: "./fonts/Roboto-Italic.ttf",
+      bolditalics: "./fonts/Roboto-MediumItalic.ttf"
+    }
+  };
+  const printer = new PdfPrinter(fonts);
+  const userProfile = await Profile.findOne({ username: req.params.username });
+  const userExpriences = await Exp.find({ username: req.params.username });
   
-  res.send("POST CV");
+  console.log(userExpriences);
+  const docDefinition = {
+    content: [
+      {
+        style: "tableExample",
+        table: {
+          widths: [150, 600],
+          headerRows: 0,
+          body: [
+            [
+              [
+                {
+                  text: "Contact"
+                },
+                {
+                  text: userProfile.area
+                },
+                {
+                  text: userProfile.email
+                },
+                {
+                  text: userExpriences[0].role
+                }
+              ],
+              [
+                {
+                  text: userProfile.name + " " + userProfile.surname,
+                  style: "header"
+                },
+                {
+                  text: userProfile.title
+                }
+              ]
+            ]
+          ]
+        },
+        layout: "noBorders"
+      }
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true
+      }
+    }
+  };
+  const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  let chunks = [];
+  let result;
+  pdfDoc.on("data", chunk => {
+    chunks.push(chunk);
+  });
+  pdfDoc.on("end", () => {
+    result = Buffer.concat(chunks);
+    res.contentType("application/pdf");
+    res.send(result);
+  });
+  pdfDoc.end();
 });
 router.delete("/:id", async (req, res) => {
   try {
