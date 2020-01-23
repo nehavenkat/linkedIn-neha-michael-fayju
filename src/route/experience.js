@@ -99,6 +99,7 @@ router.post("/:expId/picture", upload.single("image"), async (req, res) => {
     //https://www.npmjs.com/package/json2csv
     // const csv = parse(myData, opts);
     let csv = json2csv(exp, opts);
+    res.setHeader('Content-Type', 'text/csv');
     res.send(csv);
   } catch (err) {
     return res.status(500).json({ err });
