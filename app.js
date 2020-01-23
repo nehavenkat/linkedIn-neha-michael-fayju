@@ -12,7 +12,7 @@ const experienceRouter = require("./src/route/experience");
 const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
 
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 
 var whitelist = ["http://localhost:3000", "https://faizanbardai.github.io"];
 var corsOptions = {
@@ -26,7 +26,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(express.json());
+// app.use(express.json());
 
 app.get("/", (req, res) => res.send("LinkedIn Profile"));
 
