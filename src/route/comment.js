@@ -13,3 +13,10 @@ router.post("/", async (req, res) => {
       res.send(error)  
     }
 })
+
+router.get("/", async (req, res) => {
+    const comments = await Comment.find()
+    res.send(comments)
+})
+
+module.exports = router;

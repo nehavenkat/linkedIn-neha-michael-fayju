@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-var uniqueValidator = require('mongoose-unique-validator');
+
 
 const commentSchema = new Schema({
 
@@ -19,7 +19,7 @@ const commentSchema = new Schema({
     }
 }, { timestamps: true });
 
-commentSchema.plugin(uniqueValidator);
+
 
 const Comment = mongoose.model("comment", commentSchema);
 

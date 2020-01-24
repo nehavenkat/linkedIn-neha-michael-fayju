@@ -1,7 +1,7 @@
 const auth = require('basic-auth');
 const User = require("../src/model/user")
 
-const users =  User.findOne({username: username, password: password}); /* { username: { password: 'password' } } */
+const users =  User.findOne({username: "username", password: "password"}); /* { username: { password: 'password' } } */
 
 module.exports = (req, res, next) => {
   const user = auth(req)
