@@ -11,7 +11,7 @@ const profileRouter = require("./src/route/profile");
 const userRouter = require("./src/route/user");
 const postRouter = require("./src/route/post");
 const commentRouter = require("./src/route/comment");
-const auth = require('./auth')
+//const auth = require('./auth')
 
 
 
@@ -24,7 +24,7 @@ app.use(express.static('public'));
 
 app.get("/", (req, res) => res.send("LinledIn Profile"));
 
-app.use(auth)
+//app.use(auth)
 
 app.use("/experiences", experienceRouter);
 app.use("/profiles", profileRouter);
