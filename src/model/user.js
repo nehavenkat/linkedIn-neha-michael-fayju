@@ -20,6 +20,6 @@ const userSchema = new Schema({
 
 userSchema.plugin(uniqueValidator);
 
-const Profile = mongoose.model("user", userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;
