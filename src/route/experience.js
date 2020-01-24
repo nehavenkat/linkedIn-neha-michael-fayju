@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Profile = require("../model/profile");
 const Exp = require("../model/experience");
 const json2csv = require("json2csv").parse;
 const path = require("path");
@@ -30,7 +31,14 @@ router.post("/", async (req, res) => {
       ...req.body
     });
     newExp.save();
-    res.send(newExp);
+
+    const addExpToProfile = await Profile.findByIdAndUpdate(req.body.profile, {
+      $push: {
+        experiences: newExp._id
+      }
+    });
+    addExpToProfile.save();
+    res.json(newExp);
   } catch (error) {
     console.log(error);
     res.send(error);
@@ -89,7 +97,7 @@ router.post("/:expId/picture", upload.single("image"), async (req, res) => {
   }
 });
 
-  router.get("/:username/csv", async (req, res) => {
+router.get("/:username/csv", async (req, res) => {
   const exp = await Exp.find({ username: req.params.username });
 
   //the fields we use on the CSV
@@ -99,7 +107,8 @@ router.post("/:expId/picture", upload.single("image"), async (req, res) => {
     //https://www.npmjs.com/package/json2csv
     // const csv = parse(myData, opts);
     let csv = json2csv(exp, opts);
-    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-disposition', 'attachment; filename=experiences.csv');
+    res.set("Content-Type", "text/csv");
     res.send(csv);
   } catch (err) {
     return res.status(500).json({ err });

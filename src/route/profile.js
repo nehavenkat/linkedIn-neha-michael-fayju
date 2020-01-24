@@ -3,17 +3,15 @@ const router = express.Router();
 const Profile = require("../model/profile");
 const Exp = require("../model/experience");
 const { check, validationResult } = require("express-validator");
-const { writeFile, readFile, createWriteStream } = require("fs-extra");
+const { writeFile } = require("fs-extra");
 const multer = require("multer");
 const path = require("path");
 var PdfPrinter = require("pdfmake");
 
 router.get("/", async (req, res) => {
   try {
-    const response = await Profile.find(
-      {},
-      "_id name surname image title area username"
-    );
+    const response = await Profile.find().populate("experiences");
+    // const response = await Profile.find();
     res.json(response);
   } catch (error) {
     console.log(error);
@@ -23,10 +21,9 @@ router.get("/", async (req, res) => {
 
 router.get("/:username", async (req, res) => {
   try {
-    const response = await Profile.findOne(
-      { username: req.params.username },
-      "_id name surname image title area username"
-    );
+    const response = await Profile.findOne({
+      username: req.params.username
+    }).populate("experiences");
     response ? res.json(response) : res.json({});
   } catch (error) {
     console.log(error);
@@ -133,7 +130,7 @@ router.get("/:username/CV", async (req, res) => {
   const printer = new PdfPrinter(fonts);
   const userProfile = await Profile.findOne({ username: req.params.username });
   const userExpriences = await Exp.find({ username: req.params.username });
-  
+
   console.log(userExpriences);
   const docDefinition = {
     content: [

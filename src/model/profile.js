@@ -50,14 +50,15 @@ const profileSchema = new Schema({
   area: {
 		type: String
 	},
-  image: {
+  imageProfile: {
 		type: String,
-		default: "http://via.placeholder.com/360x640"
+		default: "http://via.placeholder.com/360x360"
 	},
 	username: {
 		type: String,
 		unique: true
-	}
+  },
+  experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }]
 }, { timestamps: true});
 
 //Applying the unique plugin to the schema:

@@ -29,6 +29,7 @@ function dateValidator(endDate) {
 //https://mongoosejs.com/docs/schematypes.html (Schema Types)
 const expSchema = new Schema(
   {
+    // profile: [{ type: Schema.Types.ObjectId, ref: 'Profile' }],
     role: {
       type: String,
       required: [true, "Role is required!"]
@@ -58,7 +59,7 @@ const expSchema = new Schema(
       type: String,
       required: true
     },
-    image: {
+    imageExperience: {
       type: String,
       default: "http://via.placeholder.com/360x360"
     }
