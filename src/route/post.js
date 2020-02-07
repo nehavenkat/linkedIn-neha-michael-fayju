@@ -100,7 +100,7 @@ router.post("/:postId/picture", upload.single("image"), async (req, res) => {
     await writeFile(imgDest, req.file.buffer);
     console.log(imgDest);
     const post = await Post.findOneAndUpdate(
-      req.params.postId,
+      { _id: req.params.postId }, //we need to say where to find here it is "_id"
       { imagePost: imgServe },
       { new: true }
     );
