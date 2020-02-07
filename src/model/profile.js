@@ -20,52 +20,54 @@ const Schema = mongoose.Schema;
 
 //https://www.npmjs.com/package/mongoose-unique-validator
 //mongoose-unique-validator is a plugin which adds pre-save validation for unique fields within a Mongoose schema.
-var uniqueValidator = require('mongoose-unique-validator');
+var uniqueValidator = require("mongoose-unique-validator");
 
 //https://mongoosejs.com/docs/schematypes.html (Schema Types)
-const profileSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "User first name is required!"],
-    minlength: 3,
-    maxlength: 50
+const profileSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "User first name is required!"],
+      minlength: 3,
+      maxlength: 50
+    },
+    surname: {
+      type: String,
+      required: [true, "User last name is required!"],
+      minlength: 3,
+      maxlength: 50
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: [true, "User email is required!"]
+    },
+    bio: {
+      type: String
+    },
+    title: {
+      type: String
+    },
+    area: {
+      type: String
+    },
+    imageProfile: {
+      type: String,
+      default: "http://via.placeholder.com/360x360"
+    },
+    username: {
+      type: String,
+      unique: true
+    },
+    experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }]
   },
-  surname: {
-    type: String,
-    required: [true, "User last name is required!"],
-    minlength: 3,
-    maxlength: 50
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: [true, "User email is required!"]
-  },
-  bio: {
-		type: String
-	},
-  title: {
-		type: String
-	},
-  area: {
-		type: String
-	},
-  imageProfile: {
-		type: String,
-		default: "http://via.placeholder.com/360x360"
-	},
-	username: {
-		type: String,
-		unique: true
-  },
-  experiences: [{ type: Schema.Types.ObjectId, ref: "Experience" }]
-}, { timestamps: true});
+  { timestamps: true }
+);
 
 //Applying the unique plugin to the schema:
 profileSchema.plugin(uniqueValidator);
 
-
-//To use the schema definition, we need to convert our PostSchema into a Model we can work with. 
+//To use the schema definition, we need to convert our PostSchema into a Model we can work with.
 //To do so, we pass it into mongoose.model(modelName, schema):
 const Profile = mongoose.model("Profile", profileSchema);
 
