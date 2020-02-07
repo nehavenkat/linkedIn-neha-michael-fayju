@@ -7,6 +7,16 @@ const path = require("path");
 const multer = require("multer");
 const { writeFile } = require("fs-extra");
 
+router.get("/byUser/:username", async (req, res) => {
+  try {
+    const exps = await Exp.find({ username: req.params.username });
+    res.send(exps);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const exps = await Exp.find();
@@ -32,12 +42,12 @@ router.post("/", async (req, res) => {
     });
     newExp.save();
 
-    const addExpToProfile = await Profile.findByIdAndUpdate(req.body.profile, {
-      $push: {
-        experiences: newExp._id
-      }
-    });
-    addExpToProfile.save();
+    // const addExpToProfile = await Profile.findByIdAndUpdate(req.body.profile, {
+    //   $push: {
+    //     experiences: newExp._id
+    //   }
+    // });
+    // addExpToProfile.save();
     res.json(newExp);
   } catch (error) {
     console.log(error);
@@ -107,7 +117,10 @@ router.get("/:username/csv", async (req, res) => {
     //https://www.npmjs.com/package/json2csv
     // const csv = parse(myData, opts);
     let csv = json2csv(exp, opts);
-    res.setHeader('Content-disposition', 'attachment; filename=experiences.csv');
+    res.setHeader(
+      "Content-disposition",
+      "attachment; filename=experiences.csv"
+    );
     res.set("Content-Type", "text/csv");
     res.send(csv);
   } catch (err) {
