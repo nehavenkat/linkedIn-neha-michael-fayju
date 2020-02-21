@@ -28,10 +28,10 @@ app.use(cors(corsOptions));
 
 // app.use(express.json());
 
-app.get("/", (req, res) => res.send("LinkedIn Profile"));
+app.get("/", (req, res) => res.send("LinkedIn Profile using VSC Azure"));
 
 //server.use("/images", express.static(path.join(__dirname, "images")))
-app.use("/images", express.static(path.join(__dirname, "images")))
+app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/experiences", experienceRouter);
 app.use("/profiles", profileRouter);
 app.use("/posts", postRouter);
