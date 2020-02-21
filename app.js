@@ -8,6 +8,8 @@ const listEndpoints = require("express-list-endpoints");
 require("dotenv").config();
 const port = process.env.PORT;
 mongooseConnection();
+const socketio = require("socket.io"); //socket io installed
+const http = require("http"); //http should be defined
 const experienceRouter = require("./src/route/experience");
 const profileRouter = require("./src/route/profile");
 const postRouter = require("./src/route/post");
@@ -35,6 +37,21 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 app.use("/experiences", experienceRouter);
 app.use("/profiles", profileRouter);
 app.use("/posts", postRouter);
+
+const socketServer = http
+  .createServer(app)
+  .listen(process.env.CHATPORT || 7002);
+const io = socketio(socketServer);
+io.set("transports", ["websocket"]);
+io.on("connection", async socket => {
+  //console.log(socket.id)
+
+  socket.on("broadcast", message => {
+    console.log(message);
+    socket.broadcast.emit("broadcast", message);
+    socket.emit("broadcast", message);
+  });
+});
 
 console.log(listEndpoints(app));
 app.listen(port, () => console.log(`Your app is listening on port ${port}!`));
